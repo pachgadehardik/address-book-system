@@ -6,14 +6,16 @@ import java.util.Scanner;
 
 //import addressbook.ContactDetails;
 
-public class AddressBookFunctions {
+//import addressbook.ContactDetails;
 
+public class AddressBookFunctions implements AddBookInterface {
 
+	Scanner sc = new Scanner(System.in);
 	public void createAddressBook(AddressBook addressBook) {
 		addressBook.setContactRecord(new HashMap<>());
 	}
 
-	public ContactDetails addContacttoAddressRecord() {
+	public ContactDetails getDetails(AddressBook addressBook) {
 		Scanner sc = new Scanner(System.in);
 		ContactDetails contact = new ContactDetails();
 
@@ -46,4 +48,66 @@ public class AddressBookFunctions {
 	}
 	
 	
+	
+	
+	public String locateNameContactForEditing(AddressBook addressBook){ 
+		Map<String, ContactDetails> contact = addressBook.getContactRecord();
+		System.out.println("Enter the first Name");
+		String inputName =sc.nextLine().trim();
+		
+		if(contact.containsKey(inputName)) {
+			System.out.println("Contact Exists");
+			return inputName;
+		}
+		System.out.println("No such contact Exists");
+			return null;
+	}
+	
+	public void displayContact(AddressBook addressBook) {
+		System.out.println(addressBook.getContactRecord().toString());
+	}
+	
+	@Override
+	public void editContacts(String searchString, AddressBook addressBook, ContactDetails contact) {
+
+		Map<String, ContactDetails> contacts = addressBook.getContactRecord();
+
+		String comparingString = contact.getfName();
+		// check if the new data added matches with existing key if yes then edit the
+		// value part else add the object and delete the previous key object
+		
+		if (searchString.equals(comparingString)) {
+			contacts.put(comparingString, contact);
+		} else {
+			contacts.remove(searchString);
+			contacts.put(comparingString, contact);
+		}
+
+		addressBook.setContactRecord(contacts);
+		System.out.println(contacts);
+	}
+	
+	public void printAddressBook(AddressBook addressBook) {
+		System.out.println(addressBook.getContactRecord().toString());
+	}
+	
+	
+	public void initializeAddressBook(AddressBook addressBook) {
+		addressBook.setContactRecord(new HashMap<>());
+	}
+
+	@Override
+	public void addContacts(AddressBook addressBook, ContactDetails contact) {
+//		 TODO Auto-generated method stub
+		 	Map<String,ContactDetails> contactDetail = addressBook.getContactRecord();
+		 	contactDetail.put(contact.getfName(),contact);
+		 	addressBook.setContactRecord(contactDetail);
+		
+	}
+
+	@Override
+	public void deleteContacts(String searchString, AddressBook addressBook) {
+		// TODO Auto-generated method stub
+		
+	}
 }
