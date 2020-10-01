@@ -106,8 +106,18 @@ public class AddressBookFunctions implements AddBookInterface {
 	}
 
 	@Override
-	public void deleteContacts(String searchString, AddressBook addressBook) {
+	public void deleteContacts(String inputName, AddressBook addressBook) {
 		// TODO Auto-generated method stub
+		Map<String,ContactDetails> contact = addressBook.getContactRecord();
+		if(contact.containsKey(inputName)) {
+			System.out.println("Contact Exists");
+			printAddressBook(addressBook);
+			contact.remove(inputName);
+			printAddressBook(addressBook);
+			System.out.println("deleted Successfully");
+		}
+		else
+		System.out.println("Contact Does not Exist!!");
 		
 	}
 }
