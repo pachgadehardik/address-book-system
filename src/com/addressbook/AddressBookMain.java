@@ -11,7 +11,7 @@ public class AddressBookMain {
 	static final int ADD_CONTACT = 1;
 	static final int EDIT_CONTACT = 2;
 	static final int DELETE_CONTACT =3;
-	
+	static final int ADD_MULTIPLE_CONTACT = 4;
 	public static void showMenu() {
 		System.out.println("Welcome to Address Book System!\n");
 		System.out.println("Enter the option: ");
@@ -58,6 +58,11 @@ public class AddressBookMain {
 			case DELETE_CONTACT:
 				String inputName = addressBookFunctions.locateNameContactForEditing(addressBook);
 				addressBookFunctions.deleteContacts(inputName, addressBook);
+				
+			case ADD_MULTIPLE_CONTACT:
+				System.out.println("How many Contact to add in AddressBook?");
+				int countContact = sc.nextInt();
+				addressBookFunctions.addMultipleContacts(addressBook,countContact);
 			default:
 				flag = false;
 				break;

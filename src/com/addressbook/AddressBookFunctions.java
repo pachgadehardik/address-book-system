@@ -44,6 +44,7 @@ public class AddressBookFunctions implements AddBookInterface {
 	public void addContactsToAddressBook(AddressBook addressBook, ContactDetails contactDetails) {
 		Map<String,ContactDetails> contactRecord = new HashMap<String,ContactDetails>();
 		contactRecord = addressBook.getContactRecord();
+		contactRecord.put(contactDetails.getfName(),contactDetails);
 //		System.out.println(contactRecord);
 	}
 	
@@ -120,4 +121,20 @@ public class AddressBookFunctions implements AddBookInterface {
 		System.out.println("Contact Does not Exist!!");
 		
 	}
+
+	@Override
+	public void addMultipleContacts(AddressBook addressBook, int countContact) {
+		// TODO Auto-generated method stub
+		if(countContact >0) {
+			for(int i=1;i<=countContact;i++) {
+				System.out.println("Enter for "+i+" person");
+				ContactDetails contactDetails = getDetails(addressBook);
+				addContactsToAddressBook(addressBook, contactDetails);
+			}
+			System.out.println("Successfully Added All "+countContact+" Contacts!" );
+		}
+		displayContact(addressBook);
+		
+	}
+
 }
