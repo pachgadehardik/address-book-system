@@ -14,5 +14,5 @@ public interface AddBookInterface {
 
 	public void printAddressBook(AddressBook addressBook);
 	public void addMultipleContacts(AddressBook addressBook,  int countContact);
-	
+	public void addMultipleAddressBooks(int countBooks);
 }

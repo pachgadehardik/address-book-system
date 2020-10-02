@@ -1,6 +1,8 @@
 package com.addressbook;
 
 import java.awt.DisplayMode;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.Scanner;
 
 public class AddressBookMain {
@@ -8,17 +10,22 @@ public class AddressBookMain {
 	//Usecase 1 and 2 - creating address book and adding contacts in them
 	//Adding UseCase 3 - Edit the person details using name
 	//Adding Usecase 4 -deleting person info using name
+	//Adding Usecase 6- Multiple Address Books
 	static final int ADD_CONTACT = 1;
 	static final int EDIT_CONTACT = 2;
 	static final int DELETE_CONTACT =3;
 	static final int ADD_MULTIPLE_CONTACT = 4;
+	static final int ADD_MULTIPLE_ADDRESS_BOOK = 5;
+	
+	
 	public static void showMenu() {
 		System.out.println("Welcome to Address Book System!\n");
 		System.out.println("Enter the option: ");
 		System.out.println("1-Add Contact");
 		System.out.println("2-Edit Contact");
-		
 		System.out.println("3-Delete Contact");
+		System.out.println("4-Add Multiple Contacts");
+		System.out.println("5-Add Address Books");
 		System.out.println("0-Exit the System");
 	}
 	
@@ -29,6 +36,7 @@ public class AddressBookMain {
 		
 		addressBookFunctions.initializeAddressBook(addressBook);
 		
+		Dictionary<String, AddressBook> dictionaryAddressBooks = new Hashtable<String, AddressBook>();
 		Scanner sc = new Scanner(System.in);
 		boolean flag = true;
 		while(flag) {
@@ -38,7 +46,6 @@ public class AddressBookMain {
 			case ADD_CONTACT:
 				ContactDetails contactRecord = new ContactDetails();
 				contactRecord = addressBookFunctions.getDetails(addressBook);
-//				addressBookFunctions.addContactsToAddressBook(addressBook, contactRecord);
 				addressBookFunctions.addContacts(addressBook, contactRecord);
 				System.out.println(contactRecord);
 				System.out.println("SuccessFully Added!!");
@@ -63,6 +70,10 @@ public class AddressBookMain {
 				System.out.println("How many Contact to add in AddressBook?");
 				int countContact = sc.nextInt();
 				addressBookFunctions.addMultipleContacts(addressBook,countContact);
+			case ADD_MULTIPLE_ADDRESS_BOOK:
+				System.out.println("How many address book to add?");
+				int countBook = sc.nextInt();
+				addressBookFunctions.addMultipleAddressBooks(countBook,addressBook, dictionaryAddressBooks);
 			default:
 				flag = false;
 				break;

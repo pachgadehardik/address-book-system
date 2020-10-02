@@ -1,6 +1,8 @@
 package com.addressbook;
 
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -44,6 +46,7 @@ public class AddressBookFunctions implements AddBookInterface {
 	public void addContactsToAddressBook(AddressBook addressBook, ContactDetails contactDetails) {
 		Map<String,ContactDetails> contactRecord = new HashMap<String,ContactDetails>();
 		contactRecord = addressBook.getContactRecord();
+		contactRecord.keySet().contains(contactDetails.getfName());
 		contactRecord.put(contactDetails.getfName(),contactDetails);
 //		System.out.println(contactRecord);
 	}
@@ -66,6 +69,10 @@ public class AddressBookFunctions implements AddBookInterface {
 	
 	public void displayContact(AddressBook addressBook) {
 		System.out.println(addressBook.getContactRecord().toString());
+	}
+	
+	public void displayDictionary(Dictionary<String , AddressBook> dictionaryAddressBook) {
+		System.out.println(dictionaryAddressBook.toString());
 	}
 	
 	@Override
@@ -134,6 +141,32 @@ public class AddressBookFunctions implements AddBookInterface {
 			System.out.println("Successfully Added All "+countContact+" Contacts!" );
 		}
 		displayContact(addressBook);
+		
+	}
+	
+	public void addMultipleAddressBooks(int countBooks,AddressBook addressBook, Dictionary<String, AddressBook> dictionaryAddressBooks) {
+		
+		dictionaryAddressBooks.put("Hardik", addressBook);
+		
+		for(int i =1;i<=countBooks;i++) {
+			System.out.println("Enter name of the addressBook: ");
+			String addBookName = sc.next();
+			AddressBook newAddressBook = new AddressBook();
+			newAddressBook.setContactRecord(new HashMap<String, ContactDetails>());
+			dictionaryAddressBooks.put(addBookName, newAddressBook);
+//			initializeAddressBook(newAddressBook); 
+			displayContact(newAddressBook);
+		}
+		
+		System.out.println(dictionaryAddressBooks.get("Hardik"));
+		displayContact(addressBook);
+		System.out.println("Added multiple addressBooks!!");
+		
+	}
+
+	@Override
+	public void addMultipleAddressBooks(int countBooks) {
+		// TODO Auto-generated method stub
 		
 	}
 

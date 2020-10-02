@@ -5,7 +5,7 @@ import java.util.Map;
 public class AddressBook {
 
 	
-	static Map<String,ContactDetails> contactRecord;
+	 Map<String,ContactDetails> contactRecord;
 
 	public Map<String, ContactDetails> getContactRecord() {
 		return contactRecord;
