@@ -199,8 +199,6 @@ public class AddressBookFunctions implements AddBookInterface {
 	public List<ContactDetails> citySearch(String cityName,AddressBook addressBook){
 		
 		return addressBook.getContactRecord().values().stream().filter(e->cityName.equals(e.getCity())).collect(Collectors.toList());
-		
-		 
 	}
 	
 	public List<ContactDetails> stateSearch(String stateName,AddressBook addressBook){
