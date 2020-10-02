@@ -1,8 +1,6 @@
 package com.addressbook;
 
 public interface AddBookInterface {
-
-	public void createAddressBook(AddressBook addressBook);
 	
 	public void initializeAddressBook(AddressBook addressBook);
 
@@ -14,5 +12,5 @@ public interface AddBookInterface {
 
 	public void printAddressBook(AddressBook addressBook);
 	public void addMultipleContacts(AddressBook addressBook,  int countContact);
-	public void addMultipleAddressBooks(int countBooks);
+
 }

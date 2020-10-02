@@ -2,7 +2,9 @@ package com.addressbook;
 
 import java.awt.DisplayMode;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AddressBookMain {
@@ -31,12 +33,14 @@ public class AddressBookMain {
 	
 	public static void main(String args[]) {
 		//Creating an AddressBook First
-		AddressBook addressBook = new AddressBook();
+		
 		AddressBookFunctions addressBookFunctions = new AddressBookFunctions();
 		
+		AddressBook addressBook = new AddressBook();
 		addressBookFunctions.initializeAddressBook(addressBook);
 		
-		Dictionary<String, AddressBook> dictionaryAddressBooks = new Hashtable<String, AddressBook>();
+//		Dictionary<String, AddressBook> dictionaryAddressBooks = new Hashtable<String, AddressBook>();
+		Map<String, AddressBook> mapAddressNametoBook = new HashMap<String, AddressBook>();
 		Scanner sc = new Scanner(System.in);
 		boolean flag = true;
 		while(flag) {
@@ -44,11 +48,20 @@ public class AddressBookMain {
 			int option = sc.nextInt();
 			switch(option) {
 			case ADD_CONTACT:
+				
 				ContactDetails contactRecord = new ContactDetails();
 				contactRecord = addressBookFunctions.getDetails(addressBook);
-				addressBookFunctions.addContacts(addressBook, contactRecord);
+				//Before adding Check whether person exists or not 
+				if(!addressBookFunctions.checkWhetherPersonExistsinAddressBook(contactRecord,addressBook)){
+				System.out.println("Cool!!");
+//				addressBookFunctions.addContacts(addressBook, contactRecord);
+				addressBookFunctions.addContactsToAddressBook(addressBook, contactRecord);
 				System.out.println(contactRecord);
 				System.out.println("SuccessFully Added!!");
+					}
+				else {
+					System.out.println("Name Already Present!!!");
+				}
 				break;
 			case EDIT_CONTACT:
 //				System.out.println();
@@ -73,7 +86,7 @@ public class AddressBookMain {
 			case ADD_MULTIPLE_ADDRESS_BOOK:
 				System.out.println("How many address book to add?");
 				int countBook = sc.nextInt();
-				addressBookFunctions.addMultipleAddressBooks(countBook,addressBook, dictionaryAddressBooks);
+				addressBookFunctions.addMultipleAddressBooks(countBook,addressBook, mapAddressNametoBook);
 			default:
 				flag = false;
 				break;

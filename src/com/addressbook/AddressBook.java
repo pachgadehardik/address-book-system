@@ -15,5 +15,10 @@ public class AddressBook {
 		this.contactRecord = contactRecord;
 	}
 	
+	@Override
+	public String toString() {
+		return contactRecord.values().toString();
+		
+	}
 	
 }
