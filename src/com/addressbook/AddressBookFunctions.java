@@ -195,6 +195,8 @@ public class AddressBookFunctions implements AddBookInterface {
 		
 	}
 	
+
+	
 	
 	public List<ContactDetails> citySearch(String cityName,AddressBook addressBook){
 		
@@ -204,6 +206,24 @@ public class AddressBookFunctions implements AddBookInterface {
 	public List<ContactDetails> stateSearch(String stateName,AddressBook addressBook){
 		
 		return addressBook.getContactRecord().values().stream().filter(e->stateName.equals(e.getState())).collect(Collectors.toList());
+		
+	}
+
+	public void searchContactByName_City_State(String personName, String city1, String state1, AddressBook addressBook,
+			Map<String, AddressBook> mapAddressNametoBook) {
+
+		List<AddressBook> listAddressBooks = mapAddressNametoBook.values().stream().collect(Collectors.toList());
+		for (AddressBook addBook : listAddressBooks) {
+			System.out.println(nameCityStateSearch(personName,city1, state1, addressBook));
+		}
+
+	}
+	
+	public List<ContactDetails> nameCityStateSearch(String personName, String city1, String state1, AddressBook addressBook){
+		
+		return addressBook.getContactRecord().values().stream()
+				.filter(e->personName.equals(e.getfName()) && city1.equals(e.getCity()) && state1.equals(e.getState()))
+				.collect(Collectors.toList());
 		
 	}
 
