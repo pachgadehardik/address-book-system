@@ -1,11 +1,16 @@
 package com.addressbook;
 
+import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 //import addressbook.ContactDetails;
@@ -164,6 +169,44 @@ public class AddressBookFunctions implements AddBookInterface {
 	public boolean checkWhetherPersonExistsinAddressBook(ContactDetails contactRecord, AddressBook addressBook) {
 		return addressBook.getContactRecord().keySet().stream().anyMatch(e -> e.equals(contactRecord.getfName()));
 
+	}
+	
+	public void searchContactByCityOrState(String cityName, String stateName, AddressBook addressBook, Map<String, AddressBook> mapAddressNametoBook) {
+			
+		int city =1;
+		int state =2;
+		
+		List<AddressBook> listAddressBooks  = mapAddressNametoBook.values().stream().collect(Collectors.toList());		
+		
+		for(AddressBook addBook : listAddressBooks) {
+			System.out.println("City or State??");
+			int option = sc.nextInt();
+			switch(option) {
+				//for city
+				case 1:
+					System.out.println(citySearch(cityName,addBook).toString());
+					break;
+				case 2:
+					stateSearch(stateName,addBook);
+					break;
+			}
+			
+		}
+		
+	}
+	
+	
+	public List<ContactDetails> citySearch(String cityName,AddressBook addressBook){
+		
+		return addressBook.getContactRecord().values().stream().filter(e->cityName.equals(e.getCity())).collect(Collectors.toList());
+		
+		 
+	}
+	
+	public List<ContactDetails> stateSearch(String stateName,AddressBook addressBook){
+		
+		return addressBook.getContactRecord().values().stream().filter(e->stateName.equals(e.getState())).collect(Collectors.toList());
+		
 	}
 
 }

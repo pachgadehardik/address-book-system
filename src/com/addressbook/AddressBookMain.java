@@ -18,7 +18,7 @@ public class AddressBookMain {
 	static final int DELETE_CONTACT =3;
 	static final int ADD_MULTIPLE_CONTACT = 4;
 	static final int ADD_MULTIPLE_ADDRESS_BOOK = 5;
-	
+	static final int SEARCH_BY_CITY_OR_STATE = 6;
 	
 	public static void showMenu() {
 		System.out.println("Welcome to Address Book System!\n");
@@ -27,7 +27,8 @@ public class AddressBookMain {
 		System.out.println("2-Edit Contact");
 		System.out.println("3-Delete Contact");
 		System.out.println("4-Add Multiple Contacts");
-		System.out.println("5-Add Address Books");
+		System.out.println("5-Add Multiple Address Books");
+		System.out.println("6-Search By City or State");
 		System.out.println("0-Exit the System");
 	}
 	
@@ -56,6 +57,7 @@ public class AddressBookMain {
 				System.out.println("Cool!!");
 //				addressBookFunctions.addContacts(addressBook, contactRecord);
 				addressBookFunctions.addContactsToAddressBook(addressBook, contactRecord);
+				
 				System.out.println(contactRecord);
 				System.out.println("SuccessFully Added!!");
 					}
@@ -79,14 +81,21 @@ public class AddressBookMain {
 				String inputName = addressBookFunctions.locateNameContactForEditing(addressBook);
 				addressBookFunctions.deleteContacts(inputName, addressBook);
 				
-			case ADD_MULTIPLE_CONTACT:
+			case ADD_MULTIPLE_CONTACT: //USECASE 6
 				System.out.println("How many Contact to add in AddressBook?");
 				int countContact = sc.nextInt();
 				addressBookFunctions.addMultipleContacts(addressBook,countContact);
-			case ADD_MULTIPLE_ADDRESS_BOOK:
+			case ADD_MULTIPLE_ADDRESS_BOOK: //USECASE 7
 				System.out.println("How many address book to add?");
 				int countBook = sc.nextInt();
 				addressBookFunctions.addMultipleAddressBooks(countBook,addressBook, mapAddressNametoBook);
+				break;
+			case SEARCH_BY_CITY_OR_STATE: //USECASE 8
+				System.out.println("Enter the state or city: ");
+				String city = sc.next();
+				String state = sc.next();
+				addressBookFunctions.searchContactByCityOrState(city,state,addressBook,mapAddressNametoBook);
+				break;
 			default:
 				flag = false;
 				break;
