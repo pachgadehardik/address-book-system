@@ -226,5 +226,15 @@ public class AddressBookFunctions implements AddBookInterface {
 				.collect(Collectors.toList());
 		
 	}
+	
+	public void countContacts(String city2, String state2, AddressBook addressBook,
+			Map<String, AddressBook> mapAddressNametoBook) {
+		List<AddressBook> listAddressBooks = mapAddressNametoBook.values().stream().collect(Collectors.toList());
+		for(AddressBook addBook : listAddressBooks) {
+			System.out.println(addressBook.getContactRecord().values().stream()
+				.filter(e->city2.equals(e.getCity()) && state2.equals(e.getState()))
+				.count());
+		}
+	}
 
 }
