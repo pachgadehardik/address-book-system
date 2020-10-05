@@ -1,8 +1,10 @@
 package com.addressbook;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -14,9 +16,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-//import addressbook.ContactDetails;
 
-//import addressbook.ContactDetails;
 
 public class AddressBookFunctions implements AddBookInterface {
 
@@ -246,6 +246,47 @@ public class AddressBookFunctions implements AddBookInterface {
 						(oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
 		System.out.println(result);
+	}
+
+	// Sort the Contact Details in an AddressBook by City, State, Zip
+	public void sortContactByCityStateZip(AddressBook addressBook) {
+//		addressBook.getContactRecord().values().stream().filter(e->e.getCity())
+		List<Map.Entry<String, ContactDetails>> entryList = new ArrayList<Map.Entry<String, ContactDetails>>(
+				addressBook.getContactRecord().entrySet());
+		System.out.println("Search by what:\\n 1-City 2-State 3-Zip");
+		String option;
+		int opt = sc.nextInt();
+		switch (opt) {
+		case 1:
+			Collections.sort(entryList, new Comparator<Map.Entry<String, ContactDetails>>() {
+				@Override
+				public int compare(Map.Entry<String, ContactDetails> contactEntry1,
+						Map.Entry<String, ContactDetails> contactEntry2) {
+					return contactEntry1.getValue().getCity().compareTo(contactEntry2.getValue().getCity());
+				}
+			});
+			break;
+		case 2:
+			Collections.sort(entryList, new Comparator<Map.Entry<String, ContactDetails>>() {
+				@Override
+				public int compare(Map.Entry<String, ContactDetails> contactEntry1,
+						Map.Entry<String, ContactDetails> contactEntry2) {
+					return contactEntry1.getValue().getZip().compareTo(contactEntry2.getValue().getZip());
+				}
+			});
+			break;
+		case 3:
+			Collections.sort(entryList, new Comparator<Map.Entry<String, ContactDetails>>() {
+				@Override
+				public int compare(Map.Entry<String, ContactDetails> contactEntry1,
+						Map.Entry<String, ContactDetails> contactEntry2) {
+					return contactEntry1.getValue().getState().compareTo(contactEntry2.getValue().getState());
+				}
+			});
+			break;
+		default:
+			break;
+		}
 	}
 
 }
