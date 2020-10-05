@@ -21,7 +21,7 @@ public class AddressBookMain {
 	static final int SEARCH_BY_CITY_OR_STATE = 6;
 	static final int SEARCH_BY_NAME_CITY_STATE = 7;
 	static final int COUNT_BY_CITY_STATE = 8;
-	
+	static final int SORT_BY_NAME = 9;
 	public static void showMenu() {
 		System.out.println("Welcome to Address Book System!\n");
 		System.out.println("Enter the option: ");
@@ -33,6 +33,7 @@ public class AddressBookMain {
 		System.out.println("6-Search By City or State");
 		System.out.println("7-Search By Name,City and State");
 		System.out.println("8-Count Contacts By City or State");
+		System.out.println("9-Sort the Contacts by Name");
 		System.out.println("0-Exit the System");
 	}
 	
@@ -113,6 +114,9 @@ public class AddressBookMain {
 				String city2 = sc.next();
 				String state2 = sc.next();
 				addressBookFunctions.countContacts(city2,state2,addressBook,mapAddressNametoBook);
+				break;
+			case SORT_BY_NAME:
+				addressBookFunctions.sortContact(addressBook);
 			default:
 				flag = false;
 				break;

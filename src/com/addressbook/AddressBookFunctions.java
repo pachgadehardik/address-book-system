@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -45,7 +46,7 @@ public class AddressBookFunctions implements AddBookInterface {
 
 //		contact.setId(contact_id++);
 		// Add to addressBook
-		
+
 		return contact;
 	}
 
@@ -170,43 +171,43 @@ public class AddressBookFunctions implements AddBookInterface {
 		return addressBook.getContactRecord().keySet().stream().anyMatch(e -> e.equals(contactRecord.getfName()));
 
 	}
-	
-	public void searchContactByCityOrState(String cityName, String stateName, AddressBook addressBook, Map<String, AddressBook> mapAddressNametoBook) {
-			
-		int city =1;
-		int state =2;
-		
-		List<AddressBook> listAddressBooks  = mapAddressNametoBook.values().stream().collect(Collectors.toList());		
-		
-		for(AddressBook addBook : listAddressBooks) {
+
+	public void searchContactByCityOrState(String cityName, String stateName, AddressBook addressBook,
+			Map<String, AddressBook> mapAddressNametoBook) {
+
+		int city = 1;
+		int state = 2;
+
+		List<AddressBook> listAddressBooks = mapAddressNametoBook.values().stream().collect(Collectors.toList());
+
+		for (AddressBook addBook : listAddressBooks) {
 			System.out.println("City or State??");
 			int option = sc.nextInt();
-			switch(option) {
-				//for city
-				case 1:
-					System.out.println(citySearch(cityName,addBook).toString());
-					break;
-				case 2:
-					stateSearch(stateName,addBook);
-					break;
+			switch (option) {
+			// for city
+			case 1:
+				System.out.println(citySearch(cityName, addBook).toString());
+				break;
+			case 2:
+				stateSearch(stateName, addBook);
+				break;
 			}
-			
-		}
-		
-	}
-	
 
-	
-	
-	public List<ContactDetails> citySearch(String cityName,AddressBook addressBook){
-		
-		return addressBook.getContactRecord().values().stream().filter(e->cityName.equals(e.getCity())).collect(Collectors.toList());
+		}
+
 	}
-	
-	public List<ContactDetails> stateSearch(String stateName,AddressBook addressBook){
-		
-		return addressBook.getContactRecord().values().stream().filter(e->stateName.equals(e.getState())).collect(Collectors.toList());
-		
+
+	public List<ContactDetails> citySearch(String cityName, AddressBook addressBook) {
+
+		return addressBook.getContactRecord().values().stream().filter(e -> cityName.equals(e.getCity()))
+				.collect(Collectors.toList());
+	}
+
+	public List<ContactDetails> stateSearch(String stateName, AddressBook addressBook) {
+
+		return addressBook.getContactRecord().values().stream().filter(e -> stateName.equals(e.getState()))
+				.collect(Collectors.toList());
+
 	}
 
 	public void searchContactByName_City_State(String personName, String city1, String state1, AddressBook addressBook,
@@ -214,27 +215,37 @@ public class AddressBookFunctions implements AddBookInterface {
 
 		List<AddressBook> listAddressBooks = mapAddressNametoBook.values().stream().collect(Collectors.toList());
 		for (AddressBook addBook : listAddressBooks) {
-			System.out.println(nameCityStateSearch(personName,city1, state1, addressBook));
+			System.out.println(nameCityStateSearch(personName, city1, state1, addressBook));
 		}
 
 	}
-	
-	public List<ContactDetails> nameCityStateSearch(String personName, String city1, String state1, AddressBook addressBook){
-		
-		return addressBook.getContactRecord().values().stream()
-				.filter(e->personName.equals(e.getfName()) && city1.equals(e.getCity()) && state1.equals(e.getState()))
+
+	public List<ContactDetails> nameCityStateSearch(String personName, String city1, String state1,
+			AddressBook addressBook) {
+
+		return addressBook.getContactRecord().values().stream().filter(
+				e -> personName.equals(e.getfName()) && city1.equals(e.getCity()) && state1.equals(e.getState()))
 				.collect(Collectors.toList());
-		
+
 	}
-	
+
 	public void countContacts(String city2, String state2, AddressBook addressBook,
 			Map<String, AddressBook> mapAddressNametoBook) {
 		List<AddressBook> listAddressBooks = mapAddressNametoBook.values().stream().collect(Collectors.toList());
-		for(AddressBook addBook : listAddressBooks) {
+		for (AddressBook addBook : listAddressBooks) {
 			System.out.println(addressBook.getContactRecord().values().stream()
-				.filter(e->city2.equals(e.getCity()) && state2.equals(e.getState()))
-				.count());
+					.filter(e -> city2.equals(e.getCity()) && state2.equals(e.getState())).count());
 		}
+	}
+
+	// Sort the contact details in an AddressBook by person Name
+	public void sortContact(AddressBook addressBook) {
+
+		Map<Object, Object> result = addressBook.getContactRecord().entrySet().stream()
+				.sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+						(oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+		System.out.println(result);
 	}
 
 }
