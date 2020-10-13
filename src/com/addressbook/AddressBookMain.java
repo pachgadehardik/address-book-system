@@ -1,6 +1,7 @@
 package com.addressbook;
 
 import java.awt.DisplayMode;
+import java.io.IOException;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -39,7 +40,7 @@ public class AddressBookMain {
 		System.out.println("0-Exit the System");
 	}
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws IOException {
 		// Creating an AddressBook First
 
 		AddressBookFunctions addressBookFunctions = new AddressBookFunctions();
@@ -86,11 +87,12 @@ public class AddressBookMain {
 			case DELETE_CONTACT:
 				String inputName = addressBookFunctions.locateNameContactForEditing(addressBook);
 				addressBookFunctions.deleteContacts(inputName, addressBook);
-
+				break;
 			case ADD_MULTIPLE_CONTACT: // USECASE 6
 				System.out.println("How many Contact to add in AddressBook?");
 				int countContact = sc.nextInt();
 				addressBookFunctions.addMultipleContacts(addressBook, countContact);
+				break;
 			case ADD_MULTIPLE_ADDRESS_BOOK: // USECASE 7
 				System.out.println("How many address book to add?");
 				int countBook = sc.nextInt();
@@ -122,7 +124,10 @@ public class AddressBookMain {
 			case SORT_BY_COUNTRY_STATE_ZIP:
 				addressBookFunctions.sortContactByCityStateZip(addressBook);
 				break;
-				
+			case 11: //File IO OPerations
+				System.out.println("File IO");
+				addressBookFunctions.writeReadToFile(addressBook.getContactRecord());
+				break;
 			default:
 				flag = false;
 				break;

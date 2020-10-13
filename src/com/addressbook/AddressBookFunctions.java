@@ -1,6 +1,10 @@
 package com.addressbook;
 
 import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,8 +19,6 @@ import java.util.Scanner;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-
 
 public class AddressBookFunctions implements AddBookInterface {
 
@@ -56,8 +58,30 @@ public class AddressBookFunctions implements AddBookInterface {
 //		contactRecord.keySet().contains(contactDetails.getfName());
 		contactRecord.put(contactDetails.getfName(), contactDetails);
 //		System.out.println(contactRecord);
+		try {
+			writeReadToFile(contactRecord);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void writeReadToFile(Map<String, ContactDetails> contactRecord) throws IOException {
+		String json = "{" + contactRecord.entrySet().stream()
+				.map(e -> "\"" + e.getKey() + "\"" + ":\"" + String.valueOf(e.getValue()) + "\"")
+				.collect(Collectors.joining(", ")) + "}";
+	
+		Path path = Paths.get("H:\\Capgemini\\Capg_Training\\address-book-system\\src\\Temp.txt");
+		byte[] strToBytes = json.getBytes();
+		// Write to the File
+		Files.write(path, strToBytes);
+		System.out.println("Contacts Writed to file");
+		System.out.println("REading the file");
+		System.out.println(Files.readAllLines(path));
 	}
 
+	
 	public String locateNameContactForEditing(AddressBook addressBook) {
 		Map<String, ContactDetails> contact = addressBook.getContactRecord();
 		System.out.println("Enter the first Name");
