@@ -1,6 +1,7 @@
 package com.addressbook;
 
 import java.util.List;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,7 +60,7 @@ public class AddressBookFunctions implements AddBookInterface {
 		contactRecord.put(contactDetails.getfName(), contactDetails);
 //		System.out.println(contactRecord);
 		try {
-			writeReadToFile(contactRecord);
+			writeToFile(contactRecord);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -67,18 +68,46 @@ public class AddressBookFunctions implements AddBookInterface {
 		
 	}
 	
-	public void writeReadToFile(Map<String, ContactDetails> contactRecord) throws IOException {
-		String json = "{" + contactRecord.entrySet().stream()
-				.map(e -> "\"" + e.getKey() + "\"" + ":\"" + String.valueOf(e.getValue()) + "\"")
-				.collect(Collectors.joining(", ")) + "}";
+	public void writeToFile(Map<String, ContactDetails> contactRecord) throws IOException {		
+		StringBuffer contactBuffer = new StringBuffer();
+		for(Map.Entry<String, ContactDetails> entry:contactRecord.entrySet()) {
+			String contactString = entry.getKey()+","+entry.getValue().toCSV();
+			contactBuffer.append(contactString);
+		}
+		try {
+			Files.write(Paths.get("H:\\Capgemini\\Capg_Training\\address-book-system\\src\\Temp.txt"), contactBuffer.toString().getBytes());
+		} catch (IOException x) {
+			x.printStackTrace();
+		}
+	}
 	
-		Path path = Paths.get("H:\\Capgemini\\Capg_Training\\address-book-system\\src\\Temp.txt");
-		byte[] strToBytes = json.getBytes();
-		// Write to the File
-		Files.write(path, strToBytes);
-		System.out.println("Contacts Writed to file");
-		System.out.println("REading the file");
-		System.out.println(Files.readAllLines(path));
+	public Map<String, ContactDetails> readFile() {
+		Map<String,ContactDetails> contactRecordData = new HashMap<>();
+		try {
+			Files.lines(new File("H:\\Capgemini\\Capg_Training\\address-book-system\\src\\Temp.txt").toPath()).map(line -> line.trim())
+					.forEach(line -> parseData(contactRecordData,line));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return contactRecordData;
+	}
+	public void parseData(Map<String,ContactDetails> contactRecordData,String line) {
+		
+
+		String arr[] = line.split(",");
+
+		String recordName = arr[0];
+		String fName = arr[1];
+		String lName = arr[2];
+		String address = arr[3];
+		String city = arr[4];
+		String state = arr[5];
+		String zip = arr[6];
+		String mobNo = arr[7];
+		String emaiId = arr[8];
+		contactRecordData.put(recordName,new ContactDetails(fName,lName,address,city,state,zip,mobNo,emaiId));
+
+		System.out.println(contactRecordData);
 	}
 
 	

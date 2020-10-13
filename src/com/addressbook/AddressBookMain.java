@@ -1,10 +1,7 @@
 package com.addressbook;
 
-import java.awt.DisplayMode;
 import java.io.IOException;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -125,8 +122,9 @@ public class AddressBookMain {
 				addressBookFunctions.sortContactByCityStateZip(addressBook);
 				break;
 			case 11: //File IO OPerations
-				System.out.println("File IO");
-				addressBookFunctions.writeReadToFile(addressBook.getContactRecord());
+				System.out.println("File IO\n");
+				System.out.println("Reading data from file!!");
+				addressBookFunctions.readFile();
 				break;
 			default:
 				flag = false;

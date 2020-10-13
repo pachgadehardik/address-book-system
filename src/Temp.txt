@@ -1,1 +1,1 @@
-{"Hardik":"ContactDetails [fName=Hardik, lName=Pachgade, address=Address, city=Mumbai, state=Maha, zip=123123, mobNo=1231231231, emailId=hardik@gmial.com]"}
+Hardik,Hardik,pachgade,asdasd,mumbai,maha,123123,1231231231,hardik@gmail.com
