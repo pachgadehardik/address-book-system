@@ -1,7 +1,9 @@
 package com.addressbook;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -16,6 +18,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -23,6 +28,7 @@ public class AddressBookFunctions implements AddBookInterface {
 
 	Scanner sc = new Scanner(System.in);
 	private static final String DATA_FILE = "H:\\Capgemini\\Capg_Training\\address-book-system\\src\\Temp.csv";
+	private static final String JSON_DATA_FILE = "H:\\Capgemini\\Capg_Training\\address-book-system\\src\\TempJson.json";
 
 	public ContactDetails getDetails(AddressBook addressBook) {
 		Scanner sc = new Scanner(System.in);
@@ -58,6 +64,7 @@ public class AddressBookFunctions implements AddBookInterface {
 		contactRecord.put(contactDetails.getfName(), contactDetails);
 		try {
 			writeToFile(contactRecord);
+			writeToJsonFile(contactRecord);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -67,27 +74,38 @@ public class AddressBookFunctions implements AddBookInterface {
 
 	/**
 	 * @param contactRecord
-	 * @throws IOException
-	 * Writing Data in CSV FILE
+	 * @throws IOException Writing Data in JSON format using GSON
+	 */
+	public void writeToJsonFile(Map<String, ContactDetails> contactRecord) throws IOException {
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(contactRecord);
+		FileWriter writer = new FileWriter(JSON_DATA_FILE);
+		writer.write(jsonString);
+		writer.close();
+	}
+
+	/**
+	 * @param contactRecord
+	 * @throws IOException Writing Data in CSV FILE
 	 */
 	public void writeToFile(Map<String, ContactDetails> contactRecord) throws IOException {
 		StringBuffer contactBuffer = new StringBuffer();
+		FileWriter outputfile = new FileWriter(DATA_FILE);
+
+		// create CSVWriter object filewriter object as parameter
+		CSVWriter writer = new CSVWriter(outputfile);
 		for (Map.Entry<String, ContactDetails> entry : contactRecord.entrySet()) {
 			String contactString = entry.getKey() + "," + entry.getValue().convertToCSV();
 			contactBuffer.append(contactString);
+			writer.writeNext(contactString.split(","));
 		}
-		try {
-			Files.write(Paths.get("H:\\Capgemini\\Capg_Training\\address-book-system\\src\\Temp.csv"),
-					contactBuffer.toString().getBytes());
-		} catch (IOException x) {
-			x.printStackTrace();
-		}
+		writer.close();
+
 	}
 
 	/**
 	 * @return
-	 * @throws IOException
-	 * Reading CSV File data using OpenCSV
+	 * @throws IOException Reading CSV File data using OpenCSV
 	 */
 	public Map<String, ContactDetails> readFile() throws IOException {
 		Map<String, ContactDetails> contactRecordData = new HashMap<>();
@@ -108,6 +126,17 @@ public class AddressBookFunctions implements AddBookInterface {
 		return contactRecordData;
 	}
 
+	public Map<String, ContactDetails> readJsonFile() throws IOException {
+		Gson gson = new Gson();
+		Reader reader = Files.newBufferedReader(Paths.get(JSON_DATA_FILE));
+		Map<String, ContactDetails> map = gson.fromJson(reader, Map.class);
+		for (Map.Entry<?, ?> entry : map.entrySet()) {
+			System.out.println(entry.getKey() + "=" + entry.getValue());
+		}
+
+		System.out.println("JSON READ:::");
+		return map;
+	}
 
 	public String locateNameContactForEditing(AddressBook addressBook) {
 		Map<String, ContactDetails> contact = addressBook.getContactRecord();
