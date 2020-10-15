@@ -34,6 +34,8 @@ public class AddressBookMain {
 		System.out.println("7-Search By Name,City and State");
 		System.out.println("8-Count Contacts By City or State");
 		System.out.println("9-Sort the Contacts by Name");
+		System.out.println("10-Sort by Country, name, zip");
+		System.out.println("11-Read CSV DATA file: ");
 		System.out.println("0-Exit the System");
 	}
 

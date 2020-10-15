@@ -1,29 +1,28 @@
 package com.addressbook;
 
-import java.util.List;
-import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 
 public class AddressBookFunctions implements AddBookInterface {
 
 	Scanner sc = new Scanner(System.in);
+	private static final String DATA_FILE = "H:\\Capgemini\\Capg_Training\\address-book-system\\src\\Temp.csv";
 
 	public ContactDetails getDetails(AddressBook addressBook) {
 		Scanner sc = new Scanner(System.in);
@@ -56,61 +55,60 @@ public class AddressBookFunctions implements AddBookInterface {
 	public void addContactsToAddressBook(AddressBook addressBook, ContactDetails contactDetails) {
 		Map<String, ContactDetails> contactRecord = new HashMap<String, ContactDetails>();
 		contactRecord = addressBook.getContactRecord();
-//		contactRecord.keySet().contains(contactDetails.getfName());
 		contactRecord.put(contactDetails.getfName(), contactDetails);
-//		System.out.println(contactRecord);
 		try {
 			writeToFile(contactRecord);
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	public void writeToFile(Map<String, ContactDetails> contactRecord) throws IOException {		
+
+	/**
+	 * @param contactRecord
+	 * @throws IOException
+	 * Writing Data in CSV FILE
+	 */
+	public void writeToFile(Map<String, ContactDetails> contactRecord) throws IOException {
 		StringBuffer contactBuffer = new StringBuffer();
-		for(Map.Entry<String, ContactDetails> entry:contactRecord.entrySet()) {
-			String contactString = entry.getKey()+","+entry.getValue().toCSV();
+		for (Map.Entry<String, ContactDetails> entry : contactRecord.entrySet()) {
+			String contactString = entry.getKey() + "," + entry.getValue().convertToCSV();
 			contactBuffer.append(contactString);
 		}
 		try {
-			Files.write(Paths.get("H:\\Capgemini\\Capg_Training\\address-book-system\\src\\Temp.txt"), contactBuffer.toString().getBytes());
+			Files.write(Paths.get("H:\\Capgemini\\Capg_Training\\address-book-system\\src\\Temp.csv"),
+					contactBuffer.toString().getBytes());
 		} catch (IOException x) {
 			x.printStackTrace();
 		}
 	}
-	
-	public Map<String, ContactDetails> readFile() {
-		Map<String,ContactDetails> contactRecordData = new HashMap<>();
-		try {
-			Files.lines(new File("H:\\Capgemini\\Capg_Training\\address-book-system\\src\\Temp.txt").toPath()).map(line -> line.trim())
-					.forEach(line -> parseData(contactRecordData,line));
-		} catch (Exception e) {
-			e.printStackTrace();
+
+	/**
+	 * @return
+	 * @throws IOException
+	 * Reading CSV File data using OpenCSV
+	 */
+	public Map<String, ContactDetails> readFile() throws IOException {
+		Map<String, ContactDetails> contactRecordData = new HashMap<>();
+
+		Reader reader = Files.newBufferedReader(Paths.get(DATA_FILE));
+		CsvToBean<ContactDetails> csvToBean = new CsvToBeanBuilder<ContactDetails>(reader)
+				.withType(ContactDetails.class).withIgnoreLeadingWhiteSpace(true).build();
+
+		Iterator<ContactDetails> contactIterator = csvToBean.iterator();
+		while (contactIterator.hasNext()) {
+			ContactDetails contactDetails = contactIterator.next();
+			contactRecordData.put(contactDetails.getfName(),
+					new ContactDetails(contactDetails.getfName(), contactDetails.getlName(),
+							contactDetails.getAddress(), contactDetails.getCity(), contactDetails.getState(),
+							contactDetails.getZip(), contactDetails.getMobNo(), contactDetails.getEmailId()));
 		}
+		System.out.println(contactRecordData);
 		return contactRecordData;
 	}
-	public void parseData(Map<String,ContactDetails> contactRecordData,String line) {
-		
 
-		String arr[] = line.split(",");
 
-		String recordName = arr[0];
-		String fName = arr[1];
-		String lName = arr[2];
-		String address = arr[3];
-		String city = arr[4];
-		String state = arr[5];
-		String zip = arr[6];
-		String mobNo = arr[7];
-		String emaiId = arr[8];
-		contactRecordData.put(recordName,new ContactDetails(fName,lName,address,city,state,zip,mobNo,emaiId));
-
-		System.out.println(contactRecordData);
-	}
-
-	
 	public String locateNameContactForEditing(AddressBook addressBook) {
 		Map<String, ContactDetails> contact = addressBook.getContactRecord();
 		System.out.println("Enter the first Name");
