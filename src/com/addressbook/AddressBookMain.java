@@ -36,6 +36,7 @@ public class AddressBookMain {
 		System.out.println("9-Sort the Contacts by Name");
 		System.out.println("10-Sort by Country, name, zip");
 		System.out.println("11-Read CSV DATA file: ");
+		System.out.println("12-Read JSON DATA file: ");
 		System.out.println("0-Exit the System");
 	}
 
@@ -123,10 +124,14 @@ public class AddressBookMain {
 			case SORT_BY_COUNTRY_STATE_ZIP:
 				addressBookFunctions.sortContactByCityStateZip(addressBook);
 				break;
-			case 11: //File IO OPerations
+			case 11: //File IO OPerations using OpenCSV
 				System.out.println("File IO\n");
 				System.out.println("Reading data from file!!");
 				addressBookFunctions.readFile();
+				break;
+			case 12://FILE IO Using GSON
+				System.out.println("FileIO using GSON");
+				addressBookFunctions.readJsonFile();
 				break;
 			default:
 				flag = false;
